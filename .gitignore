@@ -7,3 +7,6 @@ data/*.csv
 
 /documents/
 /data/
+# course slides
+/solutions/
+/logs
