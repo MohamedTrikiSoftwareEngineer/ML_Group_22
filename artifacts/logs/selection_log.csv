@@ -1,0 +1,5 @@
+stage,method,groups_before,groups_after,detail
+1 variance,VarianceThreshold(0.01),53,45,"8 groups dropped: commercial_zone, country_or_region, customer_since_year, flag_negative_days_since_previous_purchase, flag_negative_prior_mean_gap_days, flag_negative_spend_365d, flag_sentinel_prior_mean_purchase_value, flag_sentinel_spend_365d"
+2 redundancy,"pandas.corr on group representatives, |r| >= 0.80",45,34,"17 pairs, dropped ['Total Liquido', 'Total a Pagar', 'prior_max_purchase_value', 'prior_mean_gap_days', 'recent_share_30_90d', 'spend_30d', 'spend_31_90d', 'flag_no_purchase_history', 'prior_std_purchase_value', 'prior_total_spend', 'spend_91_180d']"
+3 univariate,"SelectKBest(custom point-biserial), cutoff 0.05",34,23,11 groups below cutoff
+4 model-based,SelectFromModel(tree) + RFE(logistic),23,23,"tree 8 groups, RFE 23 groups"

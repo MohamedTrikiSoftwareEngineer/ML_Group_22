@@ -1,0 +1,11 @@
+column,kept_levels,grouped_into_other
+payment_type,4,yes
+salesperson,5,yes
+commercial_zone,2,yes
+transport_method,21,yes
+warehouse,1,yes
+document_series,3,yes
+country_or_region,2,yes
+commercial_region,11,yes
+island,9,yes
+customer_since_year,9,yes

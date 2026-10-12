@@ -1,0 +1,12 @@
+column,categories
+payment_type,"Maybe Tomorrow Payment 10, Maybe Tomorrow Payment 12, Maybe Tomorrow Payment 7, Maybe Tomorrow Payment 9, Other"
+salesperson,"Other, VLOOKUP Master 1, VLOOKUP Master 2, VLOOKUP Master 4, VLOOKUP Master 7, VLOOKUP Master 9"
+commercial_zone,"Decorative Dashboard Zone 2, Decorative Dashboard Zone 4, Other"
+transport_method,"Maybe Tomorrow Delivery 11, Maybe Tomorrow Delivery 35, Maybe Tomorrow Delivery 36, Maybe Tomorrow Delivery 40, Maybe Tomorrow Delivery 41, Maybe Tomorrow Delivery 44, Maybe Tomorrow Delivery 45, Maybe Tomorrow Delivery 46, Maybe Tomorrow Delivery 47, Maybe Tomorrow Delivery 51, Maybe Tomorrow Delivery 53, Maybe Tomorrow Delivery 56, Maybe Tomorrow Delivery 59, Maybe Tomorrow Delivery 61, Maybe Tomorrow Delivery 66, Maybe Tomorrow Delivery 68, Maybe Tomorrow Delivery 71, Maybe Tomorrow Delivery 72, Maybe Tomorrow Delivery 73, Maybe Tomorrow Delivery 78, Maybe Tomorrow Delivery 80, Other"
+warehouse,"Final Excel Warehouse 1, Other"
+document_series,"Ctrl Z Series 1, Ctrl Z Series 2, Ctrl Z Series 3"
+country_or_region,"Country CT10: Land of The Final Version, Country CT5: Land of The Final Version, Other"
+commercial_region,"Other, Region RG17: We Will See Later, Region RG18: We Will See Later, Region RG19: We Will See Later, Region RG23: We Will See Later, Region RG24: We Will See Later, Region RG27: We Will See Later, Region RG28: We Will See Later, Region RG29: We Will See Later, Region RG31: We Will See Later, Region RG34: We Will See Later, Region RG9: We Will See Later"
+island,"Island IS1: The Pivot Archipelago, Island IS2: The Pivot Archipelago, Island IS3: The Pivot Archipelago, Island IS4: The Pivot Archipelago, Island IS5: The Pivot Archipelago, Island IS6: The Pivot Archipelago, Island IS7: The Pivot Archipelago, Island IS8: The Pivot Archipelago, Island IS9: The Pivot Archipelago, Other"
+customer_since_year,"2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, Other"
+purchase_month,"M01, M02, M03, M04, M05, M06, M07, M08, M09, M10, M11, M12"

@@ -1,0 +1,9 @@
+model,feature_set,cv_f1_mean,best_params
+logistic,NB02 all features,0.7504291181883308,"{'clf__C': 0.03, 'clf__class_weight': None}"
+logistic,NB03 selected,0.744657047999391,"{'clf__C': 0.01, 'clf__class_weight': None}"
+PCA + logistic,NB02 all features,0.7428241424682587,"{'clf__C': 0.01, 'pca__n_components': 40}"
+PCA + logistic,NB03 selected,0.7424732741104499,"{'clf__C': 10.0, 'pca__n_components': 40}"
+decision tree,NB02 all features,0.7270872606247286,"{'clf__max_depth': 5, 'clf__min_samples_leaf': 100}"
+decision tree,NB03 selected,0.7209855324303269,"{'clf__max_depth': 3, 'clf__min_samples_leaf': 50}"
+dummy (most_frequent),NB03 selected,0.7174933069253042,{}
+dummy (most_frequent),NB02 all features,0.7174933069253042,{}

@@ -1,0 +1,4 @@
+scaling,cv_f1_mean,roc_auc_mean
+as Notebook 02 left it (0/1 columns stay 0/1),0.7474319423361726,0.7907173857118533
+re-scale EVERY column inside the fold,0.7453868180006282,0.7885371045698063
+re-scale the numeric columns inside the fold,0.7473865523576608,0.7907716005750766
