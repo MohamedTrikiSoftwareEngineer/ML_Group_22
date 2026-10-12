@@ -8,9 +8,11 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "catboost>=1.2.10",
     "matplotlib",
     "numpy>=2.5.3",
     "pandas>=3.0.6",
+    "xgboost>=3.4.1",
 ]
 
 [build-system]
