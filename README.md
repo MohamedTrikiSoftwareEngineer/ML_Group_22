@@ -1,6 +1,6 @@
 # ML_Group_22 — Repeat Purchase Prediction
 
-Machine Learning homework, Group 22 · Data Mining, NOVA IMS · **"Everything & Then Some"** dataset.
+Machine Learning homework, Group 22 · NOVA IMS · **"Everything & Then Some"** dataset.
 
 A complete, reproducible classification pipeline: from raw transactions to a Kaggle submission,
 organised as four notebooks that hand their output to the next one as CSV.
@@ -30,8 +30,10 @@ ML_Group_22/
 │   ├── features/    # fitted imputer/scaler/encoder parameters, selection stages and scores
 │   └── logs/        # cleaning_log.csv and selection_log.csv — the audit trail
 ├── deliverables/
-│   ├── Homework_Group22.pdf                    # 2-page pipeline schematic and evidence
+│   ├── Group_22_handout_text.pdf               # the graded 2-page report (course naming)
 │   └── ML_Group_22_Version01.csv               # Kaggle submission, 986 rows
+├── report/
+│   └── Group_22_handout_text.tex               # its LaTeX source (pdfLaTeX) + two notebook figures
 ├── README.md · requirements.txt · environment.yml · .gitignore
 ```
 
@@ -147,9 +149,11 @@ nothing fails on a Windows console, and no code that creates directories.
 
 ## Deliverables
 
-- **`deliverables/Homework_Group22.pdf`** — two pages: the pipeline schematic with a justification
-  for each stage and the headline numbers, then the evidence, which is the notebooks' own figures
-  printed at the size they were drawn (no re-drawn charts that could drift from the code).
+- **`deliverables/Group_22_handout_text.pdf`** — the report the course asks for, named as the specification
+  requires: a cover page followed by two pages of content. The first carries the objective, the pipeline
+  schematic and why each stage suits this data; the second carries the results, the two charts the notebooks
+  draw, and the annexes. Its source is `report/Group_22_handout_text.tex` plus those two figures, so it compiles
+  the same way on Overleaf and locally, and every number in it comes from the artefacts the notebooks write.
 
 - **`deliverables/ML_Group_22_Version01.csv`** — the selected Kaggle submission: 986 rows, columns `ID` and
   `repeat_purchase_90d`, IDs identical to `sample_submission.csv` and in the same order.
