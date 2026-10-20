@@ -141,7 +141,6 @@ ASCII-only so nothing fails on a Windows console, and no code creates directorie
 |---|---|
 | `gustavo` | Gustavo |
 | `wael` | Wael |
-| `vasco` | Vasco |
 | `Mohamed` | Mohamed |
 
 Educational project, prepared for a machine learning course at NOVA IMS.
