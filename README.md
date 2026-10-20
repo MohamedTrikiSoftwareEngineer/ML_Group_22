@@ -20,22 +20,24 @@ One command builds the environment:
 ```bash
 conda env create -f environment.yml
 conda activate ml_group_22
+python -m ipykernel install --sys-prefix --name ml_group_22 --display-name "Python (ml_group_22)"
 ```
 
-Then open the notebooks from inside `01_notebooks/` and run 01, 02, 03, 04 in that order. The working
-directory matters, because each notebook finds the project root as `Path.cwd().parent`. The four input
-files are already in `data/`, so a clone has everything it needs.
+Then open the notebooks from inside `01_notebooks/` and run 01, 02, 03, 04 in that order. Pick the
+`Python (ml_group_22)` kernel; the default `Python 3` entry can belong to a different installation. The
+working directory matters, because each notebook finds the project root as `Path.cwd().parent`. The four
+input files are already in `data/`, so a clone has everything it needs.
 
 The chain takes about 95 seconds. It writes its intermediate tables back into `data/`, its figures, logs
 and metrics into `artifacts/`, and the submission into `deliverables/`. Those folders are committed empty
 on purpose: the notebooks never create a directory, so the skeleton has to be there before the first cell
 runs.
 
-`requirements.txt` and `environment.yml` carry the same pins, both capped at the major version we tested
-on. We did that because an open-ended `>=` now resolves to pandas 3.x, a breaking release this project
-has never run on. The notebooks import pandas, numpy, matplotlib, seaborn, scikit-learn and scipy, plus
-`json`, `math` and `pathlib` from the standard library, so an environment that runs the class notebooks
-runs these.
+`requirements.txt` and `environment.yml` carry the same exact pins. We started with version ranges, but a
+clean environment built today resolves to newer scikit-learn and numpy, and that quietly changes the
+probabilities, the tuned threshold and the submission file. The notebooks import pandas, numpy,
+matplotlib, seaborn, scikit-learn and scipy, plus `json`, `math` and `pathlib` from the standard library,
+so an environment that runs the class notebooks runs these.
 
 ## What is in here
 
