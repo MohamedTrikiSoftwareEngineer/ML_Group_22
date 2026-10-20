@@ -132,8 +132,10 @@ ASCII-only so nothing fails on a Windows console, and no code creates directorie
   finished document, so what is here is what we submitted.
 - **`deliverables/ML_Group_22_Version04.csv`**, the Kaggle submission, 986 rows in the template order,
   public score 0.78934. Notebook 04 regenerates it byte for byte on Windows.
-- **`ML_Group_22_notebook.zip`**, the four executed notebooks for Moodle, at the archive root, 1.4 MB.
-  It is not tracked here because it is a copy of files that are.
+- **`ML_Group_22_notebook.zip`**, what we upload to Moodle. It holds the four executed notebooks under
+  `01_notebooks/`, `environment.yml`, and the empty `data/`, `artifacts/` and `deliverables/` folders the
+  code expects but does not create. No CSVs, since those are the course files. 1.4 MB, and it is not
+  tracked here because it is a copy of files that are.
 
 **Deadline:** 26 October 2026, 17:59.
 
