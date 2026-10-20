@@ -37,14 +37,13 @@ artifacts/**
 deliverables/PLAYBOOK.html
 *.zip
 
-# ---- LaTeX build by-products ----
-# report/ tracks the .tex source AND the two figures it includes, so the handout
-# compiles from a fresh clone (tectonic locally, pdfLaTeX on Overleaf).
-# report/figures/ otherwise only stages the 15 PNGs the notebooks write to artifacts/.
-report/*.pdf
-report/*.aux
-report/*.log
-report/*.out
+# ---- report/ ----
+# The graded handout is the finished PDF under deliverables/. What stays tracked here is
+# the pair of charts that appear in it, so the images behind the report survive a clone.
+# The LaTeX source is kept local only: it is how the text was drafted, not a deliverable,
+# and neither the build by-products nor the staging copies of the other figures belong here.
+report/*
+!report/figures/
 report/figures/*
 !report/figures/nb04_model_comparison.png
 !report/figures/nb04_assessment.png
