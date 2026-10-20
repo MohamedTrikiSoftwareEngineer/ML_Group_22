@@ -121,10 +121,7 @@ Four notebooks (stages 4 and 5 share one), each handing its output to the next a
 \section{The stages and why each one suits this data}
 
 \lead{Preprocessing} Some amount fields held placeholders for `unknown' or impossible negative values. These
-88 cells (35 placeholders, 53 negatives) became missing values, flagged rather than clipped. A further 18
-negative mean purchase values (16 train, 2 test) were missed. Their totals are positive, so they look like sign
-errors. They were left unchanged. Replacing them with the column median on a copy moves grouped F1 by less
-than 0.001.
+106 cells (35 placeholders, 71 negatives) became missing values, flagged rather than clipped.
 The 65 rows with every transaction field empty were dropped, leaving 6,469. A first or second purchase has no
 history to measure: 1{,}048 training rows come from customers with zero or one earlier order, so the fields that cannot
 be measured were set to zero and marked.
@@ -133,20 +130,20 @@ Amounts are skewed, so a log transform and scaling follow, and rare categories w
 \lead{Integrating the customer data} The customer file is optional, and the key was checked first so no
 transaction is duplicated. Region and join year differ in repeat rate, but their values are fixed per customer,
 so they can work as hidden IDs. One region repeats on 94\% of its rows, yet one customer supplies 86\% of that
-region's rows. Dropping all 33 customer-file columns moves grouped F1 only from 0.7484 to 0.7481, so they add
+region's rows. Dropping all 33 customer-file columns moves grouped F1 only from 0.7489 to 0.7487, so they add
 nothing measurable but do no harm. Street, company name and postal code were left out because they identify a
 customer rather than describe behaviour.
 
 \lead{Feature selection} Selection was made by concept rather than by column, because encoding one category as
 several indicators makes those columns dependent. Constant and near-duplicate fields go first, then weak single
 associations, then two separate rankings, and finally a cross-validated comparison of the candidate sets. The
-funnel runs from 53 concepts and 124 columns to 19 and 64. The grouped folds put both within noise (0.741
-against 0.748), so the model keeps all 124 columns.
+funnel runs from 54 concepts and 125 columns to 18 and 63. The grouped folds put both within noise (0.740
+against 0.749), so the model keeps all 125 columns.
 
 \lead{Modelling} With a few thousand rows of tabular, business-readable fields, a penalised logistic regression
 is the natural first choice: stable at this size, lightly tuned, and one interpretable coefficient per feature.
 A decision tree and a dimension-reduction variant were fitted as checks beside an always-yes baseline; the linear
-model won, 0.748 against 0.723 and 0.745 (grouped folds at 0.50, best set per model; Figure 1).
+model won, 0.749 against 0.724 and 0.744 (grouped folds at 0.50, best set per model; Figure 1).
 
 \lead{Assessment} The same customers appear many times, so a random split tests the model on rows whose customer
 already helped fit it; the folds are grouped on the customer. Because the score depends on a decision threshold
@@ -156,31 +153,31 @@ loop. A final check fits the first 80\% and scores the last 20\%.
 % ================================================================== 4
 \section{Results}
 
-The grouped 0.755 (threshold tuned inside each fold; 0.748 at a fixed 0.50) is the stricter estimate, since those folds use customers the model has never met. The
-time-ordered 0.795 looks higher, but the later period has more repeaters, so always-yes already scores 0.754
-there. The gain over always-yes is about 0.04 in both checks. The submission scores 0.782.
+The grouped 0.758 (threshold tuned inside each fold; 0.749 at a fixed 0.50) is the stricter estimate, since those folds use customers the model has never met. The
+time-ordered 0.792 looks higher, but the later period has more repeaters, so always-yes already scores 0.754
+there. The gain over always-yes is about 0.04 in both checks. The submission scores 0.789.
 
 \begin{center}
 \begin{tabularx}{0.82\textwidth}{@{}R r r@{}}
 \toprule
 \textbf{Measure} & \textbf{Model F1} & \textbf{Always-yes F1}\\
 \midrule
-Customer-grouped CV, nested threshold & 0.755 & 0.718\\
-Time-ordered check, all rows & 0.795 & 0.754\\
-\quad returning customers & 0.801 & 0.762\\
-\quad first appearance & 0.730 & 0.688\\
-Kaggle, public part of the test set & 0.782 & --\\
+Customer-grouped CV, nested threshold & 0.758 & 0.718\\
+Time-ordered check, all rows & 0.792 & 0.754\\
+\quad returning customers & 0.798 & 0.762\\
+\quad first appearance & 0.731 & 0.688\\
+Kaggle, public part of the test set & 0.789 & --\\
 \bottomrule
 \end{tabularx}
 \end{center}
 
 \begin{center}
-\includegraphics[width=0.55\textwidth]{figures/nb04_model_comparison.png}\\[2pt]
+\includegraphics[width=0.61\textwidth]{figures/nb04_model_comparison.png}\\[2pt]
 {\small\color{black!60} Figure 1. Every model family under the customer-grouped protocol, against the
-baseline. The best model uses all 124 columns; the 64 selected columns score 0.741 (fold sd 0.0095).}\par
+baseline. The best model uses all 125 columns; the 63 selected columns score 0.740 (fold sd 0.0101).}\par
 \vspace{2pt}
-\includegraphics[width=0.55\textwidth]{figures/nb04_assessment.png}\\[2pt]
-{\small\color{black!60} Figure 2. Out-of-fold results at the chosen threshold of 0.408: confusion matrix,
+\includegraphics[width=0.61\textwidth]{figures/nb04_assessment.png}\\[2pt]
+{\small\color{black!60} Figure 2. Out-of-fold results at the chosen threshold of 0.426: confusion matrix,
 precision-recall trade, F1 against threshold, and ROC curve (AUC 0.792).}
 \end{center}
 
@@ -195,8 +192,8 @@ used: no resampling, bagging or boosting.
 binning and interactions were all tried; none beat the noise between folds, and the customer aggregates made
 things worse. Scaling the yes-no flags as well as the amounts was also worse.
 
-\anx{C. Limitations} The threshold (0.408) was chosen on the training period. It flags 65.6\% of out-of-fold
-predictions as repeaters against 56\% real, and 76.5\% of test rows, so it is the first value to revisit if the
+\anx{C. Limitations} The threshold (0.426) was chosen on the training period. It flags 62.9\% of out-of-fold
+predictions as repeaters against 56\% real, and 75.1\% of test rows, so it is the first value to revisit if the
 private leaderboard disagrees. The transformations were fitted once on all
 training rows before cross-validation; only the model is re-fitted inside each fold. The time-ordered check
 reuses a subset of the training rows, so the threshold, the regularisation strength and the transformations

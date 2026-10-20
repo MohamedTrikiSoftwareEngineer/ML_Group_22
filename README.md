@@ -6,9 +6,39 @@ A complete, reproducible classification pipeline: from raw transactions to a Kag
 organised as four notebooks that hand their output to the next one as CSV.
 
 **Task** — predict whether a customer makes another purchase within 90 days (`repeat_purchase_90d`).
-**Metric** — F1 on hard 0/1 labels. **Result** — nested cross-validated **F1 ≈ 0.755** on customers
-the model has never seen, and **0.794** on a chronological holdout scored at the submitted threshold,
-against an always-majority baseline of 0.718.
+**Metric** — F1 on hard 0/1 labels. **Result** — nested cross-validated **F1 ≈ 0.758** on customers
+the model has never seen, and **0.792** on a chronological holdout scored at the submitted threshold,
+against an always-majority baseline of 0.718. Public Kaggle score of the submitted file: **0.78934**.
+
+---
+
+## For the marker
+
+**You do not need to run anything to read the work.** All four notebooks were executed before they were
+committed, so every printed line, table and figure is stored inside them and renders in the browser. The
+quickest route is `01_notebooks/`, opened in order: GitHub shows the markdown, the code and the output of
+each cell without a kernel, without the data, and without a single package installed.
+
+**If you would rather run it**, the environment is one command away, `conda env create -f environment.yml`,
+and the four input CSVs are already committed, so a clone has everything. Run the notebooks in order from
+inside `01_notebooks/`; the working directory matters because each one resolves the project root as
+`Path.cwd().parent`. The chain takes about 95 seconds, writes its intermediate tables back into `data/`,
+its figures, logs and metrics into `artifacts/`, and the submission into `deliverables/`. Those folders are
+committed as an empty skeleton on purpose, because the notebooks do not create directories themselves.
+
+**What the libraries are.** The notebooks import pandas, numpy, matplotlib, seaborn, scikit-learn and
+scipy, plus the standard library `json`, `math` and `pathlib`. That is a subset of what the course material
+imports, so an environment that runs the class notebooks runs these. `environment.yml` and
+`requirements.txt` are both pinned to the versions this project was actually tested on.
+
+**Where the evidence lives.** Every number quoted in this file and in the handout comes from something the
+notebooks write. The two places worth checking first are `artifacts/metrics/assessment.json`, which holds
+the headline metrics, and `artifacts/logs/`, which records what cleaning and selection changed and how many
+rows it affected. They are regenerated on every run, so they are not tracked in git.
+
+**The submission itself** is `deliverables/ML_Group_22_Version04.csv`, scored 0.78934 on the public
+Kaggle leaderboard, and the two-page report is `deliverables/Group_22_handout_text.pdf`. The Moodle upload
+packages the four notebooks as `ML_Group_22_notebook.zip`.
 
 ---
 
@@ -30,15 +60,18 @@ ML_Group_22/
 │   ├── features/    # fitted imputer/scaler/encoder parameters, selection stages and scores
 │   └── logs/        # cleaning_log.csv and selection_log.csv — the audit trail
 ├── deliverables/
-│   ├── Group_22_handout_text.pdf               # the graded 2-page report (course naming)
-│   └── ML_Group_22_Version01.csv               # Kaggle submission, 986 rows
+│   ├── Group_22_handout_text.pdf               # the graded handout, exactly 2 pages
+│   └── ML_Group_22_Version04.csv               # Kaggle submission, 986 rows, public 0.78934
 ├── report/
-│   └── Group_22_handout_text.tex               # its LaTeX source (pdfLaTeX) + two notebook figures
+│   ├── Group_22_handout_text.tex               # LaTeX source of the same text (pdfLaTeX or tectonic)
+│   └── figures/nb04_*.png                      # the two figures that .tex includes (committed)
 ├── README.md · requirements.txt · environment.yml · .gitignore
 ```
 
-**Committed:** the notebooks, the four supplied CSVs, both deliverables, and the environment files.
-**Not committed:** anything a notebook can regenerate — intermediate CSVs, figures, metrics, logs.
+**Committed:** the notebooks, the four supplied CSVs, both deliverables, the handout source together
+with the two figures it includes, and the environment files.
+**Not committed:** everything else a notebook can regenerate — intermediate CSVs, the other 13 figures,
+metrics, logs.
 The folder skeleton is still tracked via `.gitkeep`, so a fresh clone never fails on a missing
 directory (the notebooks do not create folders).
 
@@ -61,16 +94,24 @@ source ml_env/bin/activate          # Windows: ml_env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Python 3.11. Dependencies: pandas, numpy, matplotlib, seaborn, scikit-learn, scipy, joblib, jupyter.
+Python 3.11 (tested on 3.11.0). Dependencies: pandas, numpy, matplotlib, seaborn, scikit-learn, scipy,
+joblib, jupyter, and nothing else beyond the standard library `json`, `math` and `pathlib`. Both files
+cap the major versions (`pandas<3`, `numpy<3`, `scikit-learn<2`) and record the exact version each pin
+was tested against, because an open-ended `>=` now resolves to pandas 3.x, a breaking release this
+project was never run on.
 
 ## Running the pipeline
 
 1. Place the four supplied files in `data/`: `train.csv`, `test.csv`, `clientes.csv`, `sample_submission.csv`.
-2. Run the notebooks **in order**, from inside `01_notebooks/`. Each one reads the previous one's CSVs.
-3. The submission is written to `deliverables/ML_Group_22_Version01.csv` — the course requires the `<team>_Version<NN>.csv` name, and Notebook 04 takes the version from a single constant.
+   They are committed, so a fresh clone already has them.
+2. Run the notebooks **in order**, from inside `01_notebooks/`. Each one reads the previous one's CSVs
+   and resolves the project root as `Path.cwd().parent`, so the working directory matters.
+3. The submission is written to `deliverables/ML_Group_22_Version04.csv` — the course requires the `<team>_Version<NN>.csv` name, and Notebook 04 takes the version from a single constant.
 
 No internet access, no model files to download, no manual steps in between. The whole chain runs in
-under a minute (62 s measured end to end), of which roughly half is notebook 04's grid searches.
+95 s end to end (25 + 9 + 13 + 47), roughly half of it notebook 04's grid searches, and it is
+byte-reproducible: re-running from wiped `data/` and `artifacts/` folders regenerates all 36 artefacts
+identically, the 15 figures included.
 
 ---
 
@@ -93,31 +134,31 @@ under a minute (62 s measured end to end), of which roughly half is notebook 04'
 | 1e9 placeholder values and impossible negatives | Invalid, not missing: converted to NaN plus an indicator flag. Clipping them would invent a value and poison the medians, the scaler and the correlations |
 | Nulls in the prior-purchase family are structural (1,048 first-time or single-purchase customers) | Filled with 0 plus a history flag, because a median history would describe customers who have none |
 | `transport_method` has 80 levels, 59 under 1% of rows; a category at "100% repeat" rests on 3 rows | Levels below 1% of train are grouped before encoding, and every rate is reported with its n |
-| 16 predictor pairs at \|r\| ≥ 0.80 | Pruned per concept — one-hot dummies of one category are not independent variables |
+| 28 predictor pairs at \|r\| ≥ 0.80, 14 columns dropped | Pruned per concept — one-hot dummies of one category are not independent variables |
 | `clientes` carries real signal (commercial region 38.5 points off the baseline) | Kept as candidate features and settled by ablation rather than assumed away |
 | Train covers 2015–2025, test 2025–2026, and test customers are longer-tenured | Model choice uses `GroupKFold` on `customer_id`; feature sets are ranked with `StratifiedKFold` and verified with the grouped one; a chronological estimate is reported as the realistic leaderboard number; `purchase_year` is excluded because a coefficient cannot extrapolate |
 | Classes are near balanced (56% positive), not imbalanced | No resampling; F1 is optimised because it is the scored metric, through the decision threshold |
 | 94.5% of the test transactions belong to a customer already in train, and every test date is later than every train date | Verified, not assumed: `customer_id` and `ID` never enter the design matrix, and no test transaction is a copy of a training one (0 of 986 on the 37 recorded columns). `GroupKFold` is audited to keep 0 customers on both sides of every fold, so a validation customer's own transactions are never used to fit the model that scores them |
-| Standardising the 0/1 flags and one-hot dummies hurts | Measured in notebook 04 under identical folds: re-scaling every column inside each fold costs ROC-AUC (0.7865 against 0.7899) because a rare dummy divided by its own standard deviation escapes the penalty. Only the numeric columns are standardised |
+| Standardising the 0/1 flags and one-hot dummies hurts | Measured in notebook 04 under identical folds: re-scaling every column inside each fold costs ROC-AUC (0.7864 against 0.7901) because a rare dummy divided by its own standard deviation escapes the penalty. Only the numeric columns are standardised |
 
 ## Results
 
 | Quantity | Value | | Quantity | Value |
 |---|---|---|---|---|
-| Model | logistic regression, `C = 0.03` | | Grouped CV F1 (selection) | 0.7484 |
-| Features used | 124 columns (30 numeric, 12 flags, 82 one-hot) | | Out-of-fold F1 at threshold 0.408 | 0.7603 |
-| **Nested honest F1** | **0.7550 ± 0.0127** | | Out-of-fold F1 at 0.50 | 0.7485 |
-| Chronological holdout F1 | 0.7945 | | ROC-AUC | 0.7921 |
-| Holdout F1, returning / new customer | 0.8013 / 0.7296 | | Accuracy | 0.7086 |
-| Always-majority F1 | 0.7177 | | Submission positive rate | 76.5% |
+| Model | logistic regression, `C = 0.03` | | Grouped CV F1 (selection) | 0.7489 |
+| Features used | 125 columns (30 numeric, 13 flags, 82 one-hot) | | Out-of-fold F1 at threshold 0.426 | 0.7603 |
+| **Nested honest F1** | **0.7585 ± 0.0088** | | Out-of-fold F1 at 0.50 | 0.7490 |
+| Chronological holdout F1 | 0.7920 | | ROC-AUC | 0.7923 |
+| Holdout F1, returning / new customer | 0.7984 / 0.7308 | | Accuracy | 0.7149 |
+| Always-majority F1 | 0.7177 | | Submission positive rate | 75.1% |
 
-Two numbers bracket the leaderboard. The grouped, nested one (0.755) is a floor: it scores every
+Two numbers bracket the leaderboard. The grouped, nested one (0.758) is a floor: it scores every
 customer as if the model had never seen them, while 94.5% of the test rows belong to customers who
-*are* in train. The chronological holdout (0.7945) is the closer analogue, and it separates the two
-populations: 0.8013 on returning customers against 0.7296 on first appearances.
+*are* in train. The chronological holdout (0.7920) is the closer analogue, and it separates the two
+populations: 0.7984 on returning customers against 0.7308 on first appearances.
 
-Notebook 03's parsimonious set (19 concepts / 64 columns) is statistically tied with the full set —
-0.7454 against 0.7459 under the stratified criterion, 0.7389 against 0.7476 under the grouped check,
+Notebook 03's parsimonious set (18 concepts / 63 columns) is statistically tied with the full set —
+0.7456 against 0.7459 under the stratified criterion, 0.7399 against 0.7477 under the grouped check,
 both inside one fold standard deviation — so notebook 04 scores both and uses the winner. That is
 stated in the notebook rather than left as a silent override.
 
@@ -150,14 +191,20 @@ nothing fails on a Windows console, and no code that creates directories.
 ## Deliverables
 
 - **`deliverables/Group_22_handout_text.pdf`** — the report the course asks for, named as the specification
-  requires: a cover page followed by two pages of content. The first carries the objective, the pipeline
-  schematic and why each stage suits this data; the second carries the results, the two charts the notebooks
-  draw, and the annexes. Its source is `report/Group_22_handout_text.tex` plus those two figures, so it compiles
-  the same way on Overleaf and locally, and every number in it comes from the artefacts the notebooks write.
+  requires and exactly two pages long. Page one carries the objective, the pipeline schematic and why each
+  stage suits this data; page two carries the results, the two charts the notebooks draw, and the annexes.
+  It is committed as the finished document, so what you find here is what was handed in.
+  `report/Group_22_handout_text.tex` is the LaTeX source of the same text, kept so the wording can be
+  edited and rebuilt, and it compiles unchanged on Overleaf with pdfLaTeX; its two figures are committed
+  beside it. Every number in either version comes from the artefacts the notebooks write.
 
-- **`deliverables/ML_Group_22_Version01.csv`** — the selected Kaggle submission: 986 rows, columns `ID` and
-  `repeat_purchase_90d`, IDs identical to `sample_submission.csv` and in the same order.
-- **The four notebooks** — they carry the full analysis and are the record of every number quoted here.
+- **`deliverables/ML_Group_22_Version04.csv`** — the selected Kaggle submission: 986 rows, columns `ID` and
+  `repeat_purchase_90d`, IDs identical to `sample_submission.csv` and in the same order, public score 0.78934.
+  Notebook 04 regenerates it byte for byte (md5 `28c931e3d071d1d25b7a808dafc02a21`).
+- **The four notebooks** — they carry the full analysis and are the record of every number quoted here. For
+  the Moodle upload they are packaged as `ML_Group_22_notebook.zip`: the four executed notebooks at the
+  archive root, 1.4 MB against a 50 MB limit. The zip itself is not tracked, because it is a copy of files
+  that are.
 
 **Kaggle deadline:** 26 October 2026, 17:59.
 

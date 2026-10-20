@@ -38,10 +38,13 @@ deliverables/PLAYBOOK.html
 *.zip
 
 # ---- LaTeX build by-products ----
-# report/ tracks only the .tex source; the graded PDF is the copy under deliverables/,
-# and report/figures/ is a staging folder for PNGs the notebooks already write.
+# report/ tracks the .tex source AND the two figures it includes, so the handout
+# compiles from a fresh clone (tectonic locally, pdfLaTeX on Overleaf).
+# report/figures/ otherwise only stages the 15 PNGs the notebooks write to artifacts/.
 report/*.pdf
 report/*.aux
 report/*.log
 report/*.out
-report/figures/
+report/figures/*
+!report/figures/nb04_model_comparison.png
+!report/figures/nb04_assessment.png
