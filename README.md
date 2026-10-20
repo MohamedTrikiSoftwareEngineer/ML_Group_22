@@ -6,5 +6,4 @@ Machine Learning homework (Everything & Then Some, repeat purchase prediction).
 |---|---|
 | `gustavo` | Gustavo |
 | `wael` | Wael |
-| `vasco` | Vasco |
 | `mohamed` | Mohamed |
