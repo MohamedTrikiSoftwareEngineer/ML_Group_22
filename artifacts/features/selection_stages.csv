@@ -1,8 +1,0 @@
-stage,groups,columns
-0 candidate pool,53,119
-1 after variance,45,111
-2 after redundancy,34,90
-3 after univariate,23,78
-4 tree selected,8,16
-4 RFE selected,23,78
-5 final,23,78

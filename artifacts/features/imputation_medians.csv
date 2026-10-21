@@ -1,6 +1,0 @@
-column,train_median
-days_since_previous_purchase,46.0
-prior_mean_purchase_value,646.067463768116
-prior_mean_gap_days,59.339080459770116
-prior_std_gap_days,43.63029481630335
-spend_365d,2426.605
