@@ -1,12 +1,49 @@
+# ---- Python ----
 __pycache__/
-.ipynb_checkpoints/
-.venv/
-.env
 *.pyc
-data/*.csv
+.ipynb_checkpoints/
 
-/documents/
-/data/
-# course slides
-/solutions/
-/logs
+# ---- Environments (never commit the bundled venv) ----
+.venv/
+ml_env/
+.env
+
+# ---- Local dev scratch (not part of the deliverable) ----
+.dev/
+CHANGELOG.md
+
+# ---- Data ----
+# Track ONLY the four supplied input files; ignore every generated artifact
+# (pickles, *_raw/*_clean csv, predictions, and the features/figures/logs/metrics subfolders).
+data/*
+!data/.gitkeep
+!data/train.csv
+!data/test.csv
+!data/clientes.csv
+!data/sample_submission.csv
+
+# ---- Artifacts (regenerable outputs: metrics, figures, logs, feature lists) ----
+# The notebooks cannot create folders (Path.mkdir is not in the course toolkit),
+# so the folder skeleton is committed via .gitkeep and only the contents are ignored.
+# This guarantees the directories exist on a fresh clone -> no FileNotFoundError.
+artifacts/**
+!artifacts/**/
+!artifacts/**/.gitkeep
+
+# ---- Deliverables ----
+# Committed: the 2-page PDF (task 5) and the Kaggle submission CSV (task 4).
+# PLAYBOOK.html is a private study/walkthrough document, not a graded deliverable,
+# and it links into artifacts/figures which are not committed - so it stays local.
+deliverables/PLAYBOOK.html
+*.zip
+
+# ---- report/ ----
+# The graded handout is the finished PDF under deliverables/. What stays tracked here is
+# the pair of charts that appear in it, so the images behind the report survive a clone.
+# The LaTeX source is kept local only: it is how the text was drafted, not a deliverable,
+# and neither the build by-products nor the staging copies of the other figures belong here.
+report/*
+!report/figures/
+report/figures/*
+!report/figures/nb04_model_comparison.png
+!report/figures/nb04_assessment.png
