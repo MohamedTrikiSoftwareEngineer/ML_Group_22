@@ -56,3 +56,5 @@ Reference/
 # them too would duplicate every notebook in the repository. The archive is caught by *.zip
 # above; this rule covers the unpacked folder beside it.
 submission
+
+.DS_Store
