@@ -82,7 +82,8 @@ set scores higher on the same folds, so the submission uses it.
 
 ## What we hand in
 
-The graded report is `deliverables/Group_22_handout_text.pdf`, a cover and two pages. The Kaggle file is
+The graded report is `deliverables/Group_22_handout_text.pdf`, two pages with the title and our names in a
+header at the top of the first one. The Kaggle file is
 `deliverables/ML_Group_22_Version05.csv`, 986 rows in the template order. For Moodle we pack the four
 executed notebooks, `environment.yml`, a short `README.txt` with the run steps and the empty `data/`,
 `artifacts/` and `deliverables/` folders into `submission/ML_Group22_Notebook.zip`. The course CSVs are

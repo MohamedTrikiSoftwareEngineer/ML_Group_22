@@ -6,7 +6,9 @@
 %  In Overleaf: Menu -> Settings -> "Default output name" -> Group_22_handout_text
 %  Compiler: pdfLaTeX (it also compiles under XeTeX, which is what the local build uses).
 %
-%  LAYOUT: page 1 is the cover, pages 2 and 3 hold the report.
+%  LAYOUT: two pages. The title and the attribution sit in a compact header at the
+%  top of page 1 and the body flows straight through, with no cover and no forced
+%  page break, the way the reference handout is laid out.
 %
 %  FIGURES ARE READ FROM ../artifacts/figures (relative to this file):
 %  (they are charts the notebooks draw, unchanged):
@@ -19,7 +21,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[margin=1.95cm,top=1.7cm,bottom=1.45cm]{geometry}
+\usepackage[margin=1.8cm,top=1.5cm,bottom=1.15cm]{geometry}
 \usepackage{graphicx, booktabs, tabularx, xcolor, microtype}
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows.meta}
@@ -34,31 +36,28 @@
 % the full stop in "Preprocessing." wide, which is what read as a stray tab.
 \frenchspacing
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{4pt plus 1pt minus 1pt}
+\setlength{\parskip}{3pt plus 1pt minus 1pt}
 
 \newcommand{\lead}[1]{\textbf{#1.}\space}
 \newcommand{\anx}[1]{\textbf{#1.}\space}
-\renewcommand{\arraystretch}{1.1}
+\renewcommand{\arraystretch}{1.05}
 \newcolumntype{R}{>{\raggedright\arraybackslash}X}
 \pagestyle{plain}
 
 \begin{document}
 
-% ================================================================== cover
-\thispagestyle{empty}
-\vspace*{\fill}
+% ================================================================== header
+% The cover page is gone. The title and the attribution sit in a compact centred
+% header at the top of page 1, the way the reference handout does it, so the whole
+% report is two pages. Every string the old cover carried is still here.
 \begin{center}
-{\Huge\bfseries Repeat Purchase Prediction}\\[8pt]
-{\Large Pipeline Structure and Rationale}\\[26pt]
-{\large Group 22 \textbullet\ Machine Learning, NOVA IMS}\\[4pt]
-{\large dataset ``Everything \& Then Some''}\\[26pt]
-{\large\itshape Handout PDF}\\[34pt]
-{\bfseries Members}\\[3pt]
-Mohamed Triki \textbullet\ Wael Farhat \textbullet\ Gustavo Carvalho\\[10pt]
-{\small\color{black!60} Kaggle team ML\_Group\_22}
+{\Large\bfseries Repeat Purchase Prediction}\\[2pt]
+{\normalsize Pipeline Structure and Rationale}\\[5pt]
+{\small Group 22 \textbullet\ Machine Learning, NOVA IMS \textbullet\ dataset ``Everything \& Then Some'' \textbullet\ Handout PDF}\\[4pt]
+{\small Members \textbullet\ Mohamed Triki \textbullet\ Wael Farhat \textbullet\ Gustavo Carvalho \textbullet\ Kaggle team ML\_Group\_22}\\[6pt]
+\hrule height 0.5pt
 \end{center}
-\vspace*{\fill}
-\clearpage
+\vspace{6pt}
 
 % ================================================================== 1
 \section{Objective and data}
@@ -83,7 +82,7 @@ Four notebooks, each handing its output to the next as a plain table.
 \begin{tikzpicture}[
   font=\footnotesize,
   box/.style={draw=black!65, line width=0.5pt, fill=black!4, rounded corners=2pt,
-              text width=5.05cm, minimum height=2.45cm, align=left, inner sep=4pt},
+              text width=5.05cm, minimum height=2.25cm, align=left, inner sep=4pt},
   ar/.style={-{Stealth[length=2.2mm]}, draw=black!55, line width=0.7pt}]
 
 \node[box] (a) {\textbf{Inputs}\\
@@ -149,7 +148,6 @@ never met. The threshold was tuned on out-of-fold probabilities and re-verified 
 check fits the earliest four fifths and scores the latest fifth.
 
 % ================================================================== 4
-\clearpage
 \section{Results}
 
 The time-ordered 0.761 is the headline, since no fold is ever fitted on the future, and the nested 0.759 says the
@@ -174,11 +172,11 @@ Kaggle, public part of the test set & 0.795\\
 \end{center}
 
 \begin{center}
-\includegraphics[width=0.61\textwidth]{../artifacts/figures/nb04_model_comparison.png}\\[2pt]
+\includegraphics[width=0.57\textwidth]{../artifacts/figures/nb04_model_comparison.png}\\[2pt]
 {\small\color{black!60} Figure 1. Every model family under the chronological protocol, on both feature sets,
 against the baseline. The bars sit close together: the honesty of the split matters more than the algorithm.}\par
-\vspace{4pt}
-\includegraphics[width=0.61\textwidth]{../artifacts/figures/nb04_assessment.png}\\[2pt]
+\vspace{3pt}
+\includegraphics[width=0.57\textwidth]{../artifacts/figures/nb04_assessment.png}\\[2pt]
 {\small\color{black!60} Figure 2. The assessment on the 5{,}390 rows a chronological split can score: confusion
 matrix at the chosen threshold, precision-recall trade, score against threshold, probability ranking alone.}
 \end{center}
