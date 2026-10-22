@@ -106,8 +106,8 @@ Four notebooks, each handing its output to the next as a plain table.
   threshold tuned for the scored metric.};
 
 \node[box, right=0.4cm of e] (f) {\textbf{5 \ Assess and submit}\\
-  customer-grouped and time-ordered validation, nested check of the threshold, confusion matrix and
-  precision-recall reading, predictions for the test period.};
+  time-ordered validation with a customer-grouped floor, nested check of the threshold, confusion
+  matrix and precision-recall reading, predictions for the test period.};
 
 \draw[ar] (a) -- (b);
 \draw[ar] (b) -- (c);
@@ -120,10 +120,11 @@ Four notebooks, each handing its output to the next as a plain table.
 % ================================================================== 3
 \section{The stages and why each one suits this data}
 
-\lead{Preprocessing} A placeholder for an unknown amount is not a large purchase, so those 88 cells and the
-impossible negatives became missing values, flagged rather than clipped. An empty purchase history is not missing
-at all: 1{,}048 rows belong to customers with no earlier order, so those fields were set to zero and marked.
-Amounts are skewed, so a log transform and scaling follow, and rare categories were grouped before encoding.
+\lead{Preprocessing} A placeholder for an unknown amount is not a large purchase, so those 35 cells and the
+71 impossible negatives became missing values, flagged rather than clipped. An empty purchase history is not
+missing at all: 1{,}048 rows belong to customers with no earlier order, so those fields were set to zero and
+marked. Amounts are skewed, so a log transform and scaling follow, and rare categories were grouped before
+encoding.
 
 \lead{Integrating the customer data} The customer file is optional, so it was joined only where it earns its
 place, and the key was checked first so no transaction is duplicated. Region and cohort carry real signal: one
@@ -133,25 +134,29 @@ behaviour.
 
 \lead{Feature selection} Selection was made by concept rather than by column, because encoding one category as
 several indicators makes those columns dependent. Constant and near-duplicate fields go first, then weak single
-associations, then two rankings that disagree in useful ways, and finally a cross-validated comparison that
-prefers the smaller set. The funnel runs from 53 concepts and 124 columns to 19 and 64.
+associations, then two rankings that disagree in useful ways, and finally a cross-validated comparison on the
+time-ordered folds the model is scored on, preferring the smaller set. The funnel runs from 54 concepts and 125
+columns to 18 and 63.
 
 \lead{Modelling} With a few thousand rows of tabular, business-readable fields, a penalised logistic regression
 is the honest first choice: stable at this size, lightly tuned, and one interpretable coefficient per feature.
 A decision tree and a dimension-reduction variant were fitted as checks beside an always-yes baseline; the linear
-model won, 0.748 against 0.723 and 0.745.
+model won, 0.761 against 0.732 and 0.749.
 
-\lead{Assessment} The same customers appear many times, so a random split tests the model on rows whose customer
-already helped fit it; the folds are grouped on the customer. Because the score depends on a decision threshold
-as much as on the model, that threshold was tuned on out-of-fold probabilities and re-verified inside a nested
-loop. A final check fits the earlier years and scores the later ones.
+\lead{Assessment} Every scored row is later than every row we can fit on, so the folds are cut in time order and
+none is fitted on the future; grouping them on the customer stays as the floor for the 5.5\% of test rows we have
+never met. The threshold was tuned on out-of-fold probabilities and re-verified inside a nested loop. A final
+check fits the earliest four fifths and scores the latest fifth.
 
 % ================================================================== 4
 \clearpage
 \section{Results}
 
-The grouped 0.755 is the honest floor, since those folds use customers the model has never met; the time-ordered
-0.795 is the realistic expectation, and the submission's 0.782 sits between them.
+The time-ordered 0.761 is the headline, since no fold is ever fitted on the future, and the nested 0.759 says the
+tuned threshold adds nothing to it. The customer-grouped 0.750 is the floor for the 5.5\% of test rows whose
+customer we have never met. The holdout on the latest fifth of the rows reaches 0.785, which is the realistic
+expectation because 94.5\% of the test rows belong to a customer already seen, and the public part of the test
+set scored 0.795.
 
 \begin{center}
 \begin{tabularx}{0.78\textwidth}{@{}R r@{}}
@@ -159,30 +164,29 @@ The grouped 0.755 is the honest floor, since those folds use customers the model
 \textbf{Measure} & \textbf{F1}\\
 \midrule
 Always-yes baseline & 0.718\\
-Customer-grouped cross-validation & 0.755\\
-Time-ordered check, all rows & 0.795\\
-\quad returning customers & 0.801\\
-\quad first appearance & 0.730\\
-Kaggle, public part of the test set & 0.782\\
+Time-ordered cross-validation & 0.761\\
+Customer-grouped cross-validation & 0.750\\
+Time-ordered holdout, latest fifth & 0.785\\
+\quad returning customers / first appearance & 0.793 / 0.710\\
+Kaggle, public part of the test set & 0.795\\
 \bottomrule
 \end{tabularx}
 \end{center}
 
 \begin{center}
 \includegraphics[width=0.61\textwidth]{../artifacts/figures/nb04_model_comparison.png}\\[2pt]
-{\small\color{black!60} Figure 1. Every model family under the strict customer-grouped protocol, against the
-baseline. The bars sit close together: at this size the honesty of the split matters more than the choice of
-algorithm.}\par
+{\small\color{black!60} Figure 1. Every model family under the chronological protocol, on both feature sets,
+against the baseline. The bars sit close together: the honesty of the split matters more than the algorithm.}\par
 \vspace{4pt}
 \includegraphics[width=0.61\textwidth]{../artifacts/figures/nb04_assessment.png}\\[2pt]
-{\small\color{black!60} Figure 2. The assessment read together: the confusion matrix at the chosen threshold, the
-precision-recall trade, the score against the threshold, and the ranking of probabilities on its own.}
+{\small\color{black!60} Figure 2. The assessment on the 5{,}390 rows a chronological split can score: confusion
+matrix at the chosen threshold, precision-recall trade, score against threshold, probability ranking alone.}
 \end{center}
 
 % ================================================================== annexes
 \section*{\large Annexes}
 
-\anx{A. Reproducing the work} The four notebooks run in sequence in about a minute with a fixed random seed, and
+\anx{A. Reproducing the work} The four notebooks run in sequence in a few minutes with a fixed random seed, and
 every stage writes its result as a readable table, so any number can be checked afterwards. Only tools covered in
 the course were used: no resampling, no bagging, no boosting.
 

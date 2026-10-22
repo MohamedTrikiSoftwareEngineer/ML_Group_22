@@ -47,3 +47,12 @@ report/*
 report/figures/*
 !report/figures/nb04_model_comparison.png
 !report/figures/nb04_assessment.png
+
+Reference/
+
+# ---- submission/ ----
+# The Moodle archive and the folder it is packed from. Both hold nothing but copies of files
+# that are already tracked (the four notebooks, environment.yml and README.txt), so tracking
+# them too would duplicate every notebook in the repository. The archive is caught by *.zip
+# above; this rule covers the unpacked folder beside it.
+submission
