@@ -6,8 +6,8 @@ what we chased.
 
 We ended with a logistic regression over 125 columns. It scores 0.761 on folds cut in time order, 0.759
 in nested cross validation, 0.785 on a holdout from the later part of the data, and 0.795 on the public
-leaderboard. Answering yes every time gives 0.718, so the model is doing something, but the problem is
-not easy.
+leaderboard. Answering yes every time gives 0.718 on the training rows and 0.721 on the folds the model is
+scored on, so the model is doing something, but the problem is not easy.
 
 ## Running it
 
@@ -22,17 +22,18 @@ python -m ipykernel install --sys-prefix --name ml_group_22 --display-name "Pyth
 
 Open the notebooks in `01_notebooks/`, pick the `Python (ml_group_22)` kernel, and run 01, 02, 03 and 04
 in that order. The working directory has to be `01_notebooks/` because each notebook finds the project
-root as `Path.cwd().parent`. The course CSVs are already in `data/`, and a full run takes a couple of
-minutes. The intermediate tables land back in `data/`, the figures, metrics and logs in `artifacts/`, and
+root as `Path.cwd().parent`. The course CSVs are already in `data/`, and a full run takes about a
+minute. The intermediate tables land back in `data/`, the figures, metrics and logs in `artifacts/`, and
 the submission in `deliverables/`. Those folders are tracked empty on purpose, since the notebooks never
 create a directory.
 
-The two environment files carry exact versions, not ranges, and they pin the environment that produced
-the committed outputs and the Kaggle file: Python 3.14, pandas 3.0.6 and scikit-learn 1.9.1. We tried
-ranges at first, but a clean environment built later pulled newer scikit-learn and numpy and changed the
-probabilities, the tuned threshold and the submission. The pins are what make the Kaggle file
-reproducible, and the earlier Python 3.11 set is recorded in a comment inside `environment.yml` because
-it does not reproduce them.
+The two environment files pin every package to an exact version, not a range; Python is pinned to its
+minor version, with the tested patch release named in a comment inside `environment.yml`. Together they
+pin the environment that produced the committed outputs and the Kaggle file: Python 3.14, pandas 3.0.6
+and scikit-learn 1.9.1. We tried ranges at first, but a clean environment built later pulled newer
+scikit-learn and numpy and changed the probabilities, the tuned threshold and the submission. The pins
+are what make the Kaggle file reproducible, and the earlier Python 3.11 set is recorded in a comment
+inside `environment.yml` because it does not reproduce them.
 
 ## How we worked
 
@@ -69,12 +70,14 @@ never used to fit anything. We stayed inside the course toolkit throughout: CSV 
 
 ## What we got
 
-The conservative number is the customer grouped one, 0.750, because it pretends every customer is new.
-The headline is the time ordered 0.761, since no fold is ever fitted on the future, and the nested 0.759
-sits just under it, which says the tuned threshold adds nothing of its own. Most of the test set is not
-new, about 94.5% of the rows belong to customers already in train, and the chronological holdout reflects
-that: 0.785 overall, 0.793 on returning customers and 0.710 on first timers. The submitted file scored
-0.795 on the public leaderboard against the 0.718 majority baseline.
+The conservative number is the customer grouped one, 0.740, because it pretends every customer is new. It
+scores the plain reference model of the protocol comparison, since grouping is a check on the split rather
+than a candidate worth submitting. The headline is the time ordered 0.761, since no fold is ever fitted on
+the future, and the nested 0.759 sits just under it, which says the tuned threshold adds nothing of its
+own. Most of the test set is not new, about 94.5% of the rows belong to customers already in train, and the
+chronological holdout reflects that: 0.785 overall, 0.793 on returning customers and 0.710 on first timers.
+The submitted file scored 0.795 on the public leaderboard against the 0.721 majority baseline on the same
+folds.
 
 The final model uses 125 columns and a logistic regression with `C = 0.01`. The threshold that gave the
 best out of fold F1 was 0.4651. We also scored the smaller set from notebook 03, 63 columns, but the full
