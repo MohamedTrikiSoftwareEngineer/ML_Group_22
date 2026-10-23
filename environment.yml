@@ -1,0 +1,29 @@
+name: ml_group_22
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python 3.14 is what the four committed notebooks ran on (3.14.6), and every stored output,
+  # every artifact and deliverables/ML_Group_22_Version05.csv come from the set below.
+  #
+  # The earlier version of this file pinned Python 3.11 with pandas 2.3.3, numpy 2.3.5,
+  # matplotlib 3.10.0, pillow 12.2.0, scikit-learn 1.8.0, joblib 1.5.3 and scipy 1.16.3.
+  # Those pins are kept here for the record only. They are not what produced the committed
+  # numbers, and switching between the two sets moves the predicted probabilities, the tuned
+  # threshold and the submission file.
+  - python=3.14
+  - pip
+  - pip:
+    # Same pins as requirements.txt, so conda and pip give the same environment.
+    # Exact versions, not ranges: the reported scores and the submitted CSV come from this set.
+    - pandas==3.0.6
+    - numpy==2.5.3
+    - matplotlib==3.11.2
+    - pillow==12.3.0
+    - seaborn==0.13.2
+    - scikit-learn==1.9.1
+    - joblib==1.6.0
+    - scipy==1.18.1
+    # Runner only. Neither package takes part in a computation, so neither can move a score.
+    - jupyter==1.1.1
+    - ipykernel==7.4.0
